@@ -1,0 +1,10 @@
+<library path="traction_system_interface">
+  <class
+    name="traction_system_interface/TractionSystemInterface"
+    type="traction_system_interface::TractionSystemInterface"
+    base_class_type="hardware_interface::SystemInterface">
+    <description>
+      Minimal motor hardware interface for ROS 2 control.
+    </description>
+  </class>
+</library>
