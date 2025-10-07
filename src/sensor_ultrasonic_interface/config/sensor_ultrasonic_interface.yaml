@@ -1,0 +1,6 @@
+hardware:
+  - name: ultrasonic_sensor
+    type: system
+    plugin: "sensor_ultrasonic_interface/SensorUltrasonicInterface"
+    parameters:
+      topic_name: "/sim/ultrasonic/distance"
