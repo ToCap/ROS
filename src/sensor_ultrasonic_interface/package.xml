@@ -3,7 +3,7 @@
   <name>sensor_ultrasonic_interface</name>
   <version>0.1.0</version>
   <description>Minimal ultrasonic sensor interface for ROS 2 control</description>
-  <maintainer email="you@example.com">Thomas B</maintainer>
+  <maintainer email="@ToCap">ToCap</maintainer>
   <license>Apache-2.0</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
