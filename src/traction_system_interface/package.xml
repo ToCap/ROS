@@ -3,7 +3,7 @@
   <name>traction_system_interface</name>
   <version>0.1.0</version>
   <description>Minimal motor hardware interface for ROS 2 control</description>
-  <maintainer email="you@example.com">Your Name</maintainer>
+  <maintainer email="@ToCap">ToCap</maintainer>
   <license>Apache-2.0</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
