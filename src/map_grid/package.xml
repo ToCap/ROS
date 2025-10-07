@@ -3,8 +3,7 @@
   <name>map_grid</name>
   <version>0.1.0</version>
   <description>Grid map node with lifecycle support</description>
-
-  <maintainer email="you@example.com">Your Name</maintainer>
+  <maintainer email="you@example.com">ToCap</maintainer>
   <license>Apache-2.0</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
