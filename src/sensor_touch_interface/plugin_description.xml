@@ -1,0 +1,10 @@
+<library path="sensor_touch_interface">
+  <class
+    name="sensor_touch_interface/SensorTouchInterface"
+    type="sensor_touch_interface::SensorTouchInterface"
+    base_class_type="hardware_interface::SystemInterface">
+    <description>
+      Minimal touch sensor interface for ROS 2 control
+    </description>
+  </class>
+</library>

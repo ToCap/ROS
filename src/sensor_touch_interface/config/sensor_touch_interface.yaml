@@ -1,0 +1,19 @@
+# ============================================================
+# ROS <-> Gazebo (Ignition) bridge configuration
+# for LEGO EV3 Touch Sensor simulation
+# ============================================================
+
+
+- ros_topic_name: "/touch_sensor/state"
+  gz_topic_name: "/model/ev3_robot/link/touch_sensor_link/touch_sensor/state"
+  ros_type_name: "std_msgs/msg/Bool"
+  gz_type_name: "gz.msgs.Boolean"
+  direction: GZ_TO_ROS
+
+# (optionnel) Si tu veux publier vers la simulation des commandes ou reset
+# Ici, ce n’est pas nécessaire pour un capteur passif, mais on montre la structure.
+#- ros_topic_name: "/touch_sensor/command"
+#  gz_topic_name: "/model/ev3_robot/link/touch_sensor_link/touch_sensor/cmd"
+#  ros_type_name: "std_msgs/msg/Empty"
+#  gz_type_name: "gz.msgs.Empty"
+#  direction: ROS_TO_GZ
