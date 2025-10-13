@@ -1,6 +1,30 @@
+# ==========================================
+# ROS 2 CONTROL CONFIGURATION
+# ==========================================
 hardware:
   - name: ultrasonic_sensor
     type: system
     plugin: "sensor_ultrasonic_interface/SensorUltrasonicInterface"
     parameters:
       topic_name: "/sim/ultrasonic/distance"
+
+
+# # ==========================================
+# # ROS 2 CONTROL CONFIGURATION
+# # ==========================================
+# hardware:
+#   - name: ultrasonic_sensor
+#     type: system
+#     plugin: "sensor_ultrasonic_interface/SensorUltrasonicInterface"
+#     parameters:
+#       topic_name: "/sim/ultrasonic/distance"
+
+# # ==========================================
+# # ROS-GAZEBO BRIDGE CONFIGURATION
+# # ==========================================
+# bridges:
+#   - ros_topic_name: "/sim/ultrasonic/distance"
+#     gz_topic_name: "/world/default/model/ultrasonic_bot/link/ultrasonic_link/sensor/ultrasonic_sensor/range"
+#     ros_type_name: "sensor_msgs/msg/Range"
+#     gz_type_name: "gz.msgs.Range"
+#     direction: GZ_TO_ROS

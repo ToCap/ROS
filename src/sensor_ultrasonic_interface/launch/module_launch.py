@@ -4,6 +4,8 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
 from launch.substitutions import PathJoinSubstitution
 from ament_index_python.packages import get_package_share_directory
+from launch.actions import TimerAction
+
 import os
 
 def generate_launch_description():
@@ -12,6 +14,7 @@ def generate_launch_description():
 
     urdf_file = os.path.join(pkg_share, 'description', 'sensor_ultrasonic_interface.urdf.xacro')
     controllers_file = os.path.join(pkg_share, 'config', 'sensor_ultrasonic_interface.yaml')
+    sdf_file = os.path.join(pkg_share, 'description', 'ultrasonic_bot.sdf')
 
     # Start Gazebo simulation (Ignition)
     gz_sim = ExecuteProcess(
@@ -27,6 +30,17 @@ def generate_launch_description():
         arguments=['-file', urdf_file, '-name', 'ultrasonic_bot'],
         output='screen'
     )
+    # spawn_entity = TimerAction(
+    #     period=3.0,
+    #     actions=[ExecuteProcess(
+    #         cmd=[
+    #             'gz', 'create',
+    #             '-file', sdf_file,
+    #             '-name', 'ultrasonic_bot'
+    #         ],
+    #         output='screen'
+    #     )]
+    # )
 
     # --- Controller manager ---
     control_node = Node(
@@ -52,27 +66,27 @@ def generate_launch_description():
     )
 
     # Bridge topic between Gazebo Sim and ROS 2
-    bridge_ultrasonic = Node(
-        package='ros_gz_bridge',
-        executable='parameter_bridge',
-        arguments=[
-            # GZ topic name and types:
-            '/world/default/model/ultrasonic_bot/link/ultrasonic_link/sensor/ultrasonic_sensor/range'
-            '@sensor_msgs/msg/Range@gz.msgs.Range'
-        ],
-        remappings=[
-            # Rename in ROS 2 side
-            ('/world/default/model/ultrasonic_bot/link/ultrasonic_link/sensor/ultrasonic_sensor/range',
-             '/sim/ultrasonic/distance')
-        ],
-        output='screen'
-    )
+    # bridge_ultrasonic = TimerAction(
+    #     period=3.0,
+    #     actions=[Node(
+    #         package='ros_gz_bridge',
+    #         executable='parameter_bridge',
+    #         arguments=[
+    #             '/world/default/model/ultrasonic_bot/link/ultrasonic_link/sensor/ultrasonic_sensor/range@sensor_msgs/msg/Range@gz.msgs.Range'
+    #         ],
+    #         remappings=[
+    #             ('/world/default/model/ultrasonic_bot/link/ultrasonic_link/sensor/ultrasonic_sensor/range',
+    #             '/sim/ultrasonic/distance')
+    #         ],
+    #         output='screen'
+    #     )]
+    # )
 
     return LaunchDescription([
         gz_sim,
         spawn_entity,
         control_node,
         state_broadcaster,
-        bridge_ultrasonic,
+        # bridge_ultrasonic,
         ultrasonic_controller
     ])
