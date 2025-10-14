@@ -1,6 +1,12 @@
 <?xml version="1.0"?>
 <robot name="ev3_robot" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
+    <ros2_control name="TouchInterface" type="system">
+    <hardware>
+        <plugin>sensor_touch_interface/SensorTouchInterface</plugin>
+    </hardware>
+    </ros2_control>
+    
   <!-- Base du robot -->
   <link name="base_link">
     <visual>
