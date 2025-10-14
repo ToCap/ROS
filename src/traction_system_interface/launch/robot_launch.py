@@ -17,7 +17,7 @@ def generate_launch_description():
     controllers_file = os.path.join(pkg_share, 'config', 'traction_system_controllers.yaml')
 
 
-    # Lancer Gazebo Sim (Ignition)
+    # Start Gazebo simulation (Ignition)
     gz_sim = ExecuteProcess(
         cmd=['gz', 'sim', '-v', '4', '--headless-rendering'],
         output='screen'
@@ -89,7 +89,7 @@ def generate_launch_description():
         gz_sim,
         robot_state_publisher,
         spawn_robot,
-        controller_manager,                 # nouveau
-        joint_state_broadcaster_spawner,    # nouveau
-        diff_drive_spawner                  # nouveau
+        controller_manager,
+        joint_state_broadcaster_spawner,
+        diff_drive_spawner
     ])
