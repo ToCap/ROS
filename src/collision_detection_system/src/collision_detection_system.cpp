@@ -40,13 +40,15 @@ void CollisionDetectionSystem::set_right_measured(int value, const rclcpp::Time 
 
 double CollisionDetectionSystem::measured_to_certainty(int measured_value)
 {
-  switch (measured_value)
-  {
-    case 2: return 0.95;  // Bumped
-    case 1: return 0.75;  // Pressed
-    case 0:
-    default: return 0.0;  // Released
-  }
+    // declaration of local variables
+    double score = 0.0;
+
+    if (measured_value < NUM_STATE_MAX)
+    {
+        score = kValidityScore[measured_value];
+    }
+
+    return score;
 }
 
 CollisionDetectionSystem::ObstacleInfo CollisionDetectionSystem::compute()

@@ -16,6 +16,18 @@ namespace collision_detection_system {
 class CollisionDetectionSystem
 {
 public:
+
+  enum State
+  {
+    RELEASED = 0 ,  // input touch sensor is released e.g. not pressed
+    PRESSED = 1,    // input touch sensor is pressed
+    BUMPED = 2,     // input touch sensor has been pressed and released in the past. The next Bumped occurrence will then require a new press and release
+
+    NUM_STATE_MAX
+  };
+
+  static constexpr float_t kValidityScore[NUM_STATE_MAX] = {1.0, 1.0, 0.5};
+
   struct SensorState
   {
     bool valid = false;
