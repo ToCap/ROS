@@ -30,20 +30,24 @@ public:
 
   struct SensorState
   {
-    bool valid = false;
     bool state_bool = false;      // True if pressed, false otherwise
     int measured_value = 0;       // 0=Released, 1=Pressed, 2=Bumped
     rclcpp::Time last_update;
   };
 
+  /**
+   * @struct ObstacleInfo
+   * @brief Represents an obstacle area with position, size, and metadata.
+   */
   struct ObstacleInfo
   {
-    bool present = false;
-    double x = 0.0;
-    double y = 0.0;
-    double certainty = 0.0;
-    std::string source; // "left", "right", "both", or "none"
-    rclcpp::Time stamp;
+    double origin_x;        ///< X-coordinate of the rectangle's origin (bottom-left corner) in robot coordinates
+    double origin_y;        ///< Y-coordinate of the rectangle's origin (bottom-left corner) in robot coordinates
+    double length;          ///< Length of the rectangle along the X-axis.
+    double width;           ///< Width of the rectangle along the Y-axis.
+    double validity_score;  ///< score indicating confidence of obstacle presence
+    std::string source;     ///< Source identifier of the data (e.g., sensor name or module)
+    rclcpp::Time stamp;     ///< Timestamp associated with the rectangle data
   };
 
   CollisionDetectionSystem();
@@ -63,6 +67,6 @@ private:
   SensorState left_;
   SensorState right_;
 
-  static double measured_to_certainty(int measured_value);
+  static double evaluate_validity(int measured_value);
 };
 }

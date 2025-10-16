@@ -110,10 +110,10 @@ void CollisionDetectionNode::publish_obstacle_info()
   std::ostringstream ss;
   ss << std::fixed << std::setprecision(3);
   ss << "{";
-  ss << "\"present\":" << (info.present ? "true" : "false") << ",";
-  ss << "\"x\":" << info.x << ",";
-  ss << "\"y\":" << info.y << ",";
-  ss << "\"certainty\":" << info.certainty << ",";
+  //ss << "\"present\":" << (info.present ? "true" : "false") << ",";
+  ss << "\"x\":" << info.origin_x << ",";
+  ss << "\"y\":" << info.origin_y << ",";
+  ss << "\"certainty\":" << info.validity_score << ",";
   ss << "\"source\":\"" << info.source << "\",";
   ss << "\"stamp\":" << info.stamp.seconds();
   ss << "}";
