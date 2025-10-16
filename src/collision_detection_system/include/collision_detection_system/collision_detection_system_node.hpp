@@ -46,13 +46,9 @@ private:
   rclcpp::Subscription<std_msgs::msg::Int32>::SharedPtr left_measured_sub_;
   rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr right_state_sub_;
   rclcpp::Subscription<std_msgs::msg::Int32>::SharedPtr right_measured_sub_;
-  rclcpp::TimerBase::SharedPtr timer_;
 
   // Algorithm instance
   CollisionDetectionSystem detection_;
-
-  // Parameters
-  double publish_period_{0.05};
 
   // Timer callback
   void publish_obstacle_info();
