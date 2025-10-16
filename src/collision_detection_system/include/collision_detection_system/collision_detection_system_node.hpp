@@ -8,6 +8,7 @@
 #include "std_msgs/msg/int32.hpp"
 #include "std_msgs/msg/string.hpp"
 #include "collision_detection_system.hpp"
+#include "param_geometry.hpp"
 
 namespace collision_detection_system {
 

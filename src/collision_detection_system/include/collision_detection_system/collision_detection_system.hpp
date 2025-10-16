@@ -5,6 +5,8 @@
 #include <string>
 #include "rclcpp/rclcpp.hpp"
 
+#include "param_geometry.hpp"
+
 namespace collision_detection_system {
 
 /**
@@ -62,10 +64,23 @@ public:
   // Compute obstacle detection result
   ObstacleInfo compute();
 
+  /**
+   * @brief Configure the collision detection algorithm with the provided parameters
+   *
+   * This method sets up the algorithm using the values defined in the
+   * CollisionConfig structure. The algorithm does not access ROS parameters
+   * directly; it relies entirely on the configuration provided by the caller.
+   *
+   * @param cfg A reference to a CollisionConfig structure containing all necessary
+   *            configuration parameters such as topic names and thresholds.
+   */
+  void load_configuration(const Param_Geometry_t &cfg);
+
 private:
   std::mutex mutex_;
   SensorState left_;
   SensorState right_;
+  Param_Geometry_t prm_geometry_;
 
   static double evaluate_validity(int measured_value);
 };

@@ -100,3 +100,7 @@ CollisionDetectionSystem::ObstacleInfo CollisionDetectionSystem::compute()
 
   return info;
 }
+void CollisionDetectionSystem::load_configuration(const Param_Geometry_t &prm)
+{
+    this->prm_geometry_ = prm;  // copy the input geometry related params
+}

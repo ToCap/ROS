@@ -5,3 +5,8 @@ collision_detection_system:
     right_state_topic: "/robot/right_bumper/state"
     right_measured_topic: "/robot/right_bumper/measured"
     output_topic: "/collision_detection/output"
+
+    left_bumper_x: -0.2
+    right_bumper_x: 0.2
+    left_bumper_y: 0.1
+    right_bumper_y: 0.1

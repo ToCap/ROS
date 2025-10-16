@@ -15,6 +15,12 @@ CollisionDetectionNode::CollisionDetectionNode(const rclcpp::NodeOptions & optio
   this->declare_parameter<std::string>("right_state_topic", "/robot/right_bumper/state");
   this->declare_parameter<std::string>("right_measured_topic", "/robot/right_bumper/measured");
   this->declare_parameter<std::string>("output_topic", "/collision_detection/output");
+
+  this->declare_parameter<double>("left_bumper_x", -0.2);
+  this->declare_parameter<double>("left_bumper_y", 0.1);
+  this->declare_parameter<double>("right_bumper_x", 0.2);
+  this->declare_parameter<double>("right_bumper_y", 0.1);
+
 }
 
 rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn
@@ -28,6 +34,13 @@ CollisionDetectionNode::on_configure(const rclcpp_lifecycle::State &)
   right_state_topic_ = get_parameter("right_state_topic").as_string();
   right_measured_topic_ = get_parameter("right_measured_topic").as_string();
   output_topic_ = get_parameter("output_topic").as_string();
+
+  // load geometry related parameters
+  Param_Geometry_t cfg;
+  cfg.left_bumper_x = get_parameter("left_bumper_x").as_double();
+  cfg.left_bumper_y = get_parameter("left_bumper_y").as_double();
+  cfg.right_bumper_x = get_parameter("right_bumper_x").as_double();
+  cfg.right_bumper_y = get_parameter("right_bumper_y").as_double();
 
   // Create publisher
   publisher_ = create_publisher<std_msgs::msg::String>(output_topic_, 10);
@@ -60,6 +73,9 @@ CollisionDetectionNode::on_configure(const rclcpp_lifecycle::State &)
       detection_.set_right_measured(msg->data, now());
       this->publish_obstacle_info();
     });
+
+  // copy the input geometry related params
+  this->detection_.load_configuration(cfg);
 
   RCLCPP_INFO(get_logger(), "Node configured");
   return rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn::SUCCESS;
