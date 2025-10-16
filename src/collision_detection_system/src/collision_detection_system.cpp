@@ -49,58 +49,74 @@ double CollisionDetectionSystem::evaluate_validity(int measured_value)
 
 CollisionDetectionSystem::ObstacleInfo CollisionDetectionSystem::compute()
 {
-  std::lock_guard<std::mutex> lock(mutex_);
 
-  ObstacleInfo info;
-  info.stamp = rclcpp::Clock().now();
+    std::lock_guard<std::mutex> lock(mutex_);
 
-  const double left_x = -0.2;
-  const double right_x = 0.2;
-  const double y = 0.0;
+    ObstacleInfo info;
+    info.stamp = rclcpp::Clock().now();
 
-  double left_cert = evaluate_validity(left_.measured_value);
-  double right_cert =  evaluate_validity(right_.measured_value);
+    // Compute if left or right sensor is active
+    bool is_left_active = (left_.state_bool || (left_.measured_value > 0) );
+    bool is_right_active = (right_.state_bool || (right_.measured_value > 0) );
 
-  // Slightly increase validity_score if boolean state is true
-  if (left_.state_bool) left_cert = std::max(left_cert, 0.5);
-  if (right_.state_bool) right_cert = std::max(right_cert, 0.5);
+    // Compute validity score
+    double score = 0.0;
+    if (is_left_active)
+    {
+        score = left_.state_bool ? 1.0 : kValidityScore[left_.measured_value];
+    }
+    else if (is_right_active)
+    {
+         score = right_.state_bool ? 1.0 : kValidityScore[right_.measured_value];
+    }
+    else
+    {
+        score = 0.0;
+    }
 
-  const double threshold = 0.25;
-  bool left_detected = left_cert > threshold;
-  bool right_detected = right_cert > threshold;
+    double length = this->prm_geometry_.right_bumper_x - this->prm_geometry_.left_bumper_x;
 
-  if (left_detected && right_detected)
-  {
-    info.origin_x = (left_x + right_x) / 2.0;
-    info.origin_y = y;
-    info.validity_score = std::min(1.0, (left_cert + right_cert) * 0.6);
-    info.source = "both";
-  }
-  else if (left_detected)
-  {
-    info.origin_x = left_x;
-    info.origin_y = y;
-    info.validity_score = left_cert;
-    info.source = "left";
-  }
-  else if (right_detected)
-  {
-    info.origin_x = right_x;
-    info.origin_y = y;
-    info.validity_score = right_cert;
-    info.source = "right";
-  }
-  else
-  {
-    info.origin_x = 0.0;
-    info.origin_y = 0.0;
-    info.validity_score = 0.0;
-    info.source = "none";
-  }
+    // Build boundex box of detected obstacle
+    if (is_left_active && is_right_active)
+    {
+        info.origin_x = this->prm_geometry_.left_bumper_x;
+        info.origin_y = this->prm_geometry_.left_bumper_y;
+        info.length = length;
+        info.width = 0.1;
+        info.validity_score = score;
+    }
+    else if (is_left_active)
+    {
+        info.origin_x = this->prm_geometry_.left_bumper_x;
+        info.origin_y = this->prm_geometry_.left_bumper_y;
+        info.length = length / 2;
+        info.width = 0.1;
+        info.validity_score = score;
+    }
+    else if (is_right_active)
+    {
+        info.origin_x = this->prm_geometry_.right_bumper_x;
+        info.origin_y = this->prm_geometry_.right_bumper_y;
+        info.length = -length/2;
+        info.width = 0.1;
+        info.validity_score = score;
+    }
+    else
+    {
+        info.origin_x = 0.0;
+        info.origin_y = 0.0;
+        info.length = 0;
+        info.width = 0;
+        info.validity_score = 0.0;
+        info.source = "none";
+    }
 
   return info;
 }
+
 void CollisionDetectionSystem::load_configuration(const Param_Geometry_t &prm)
 {
     this->prm_geometry_ = prm;  // copy the input geometry related params
 }
+
+
