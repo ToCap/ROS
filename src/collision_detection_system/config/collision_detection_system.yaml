@@ -1,0 +1,7 @@
+collision_detection_system:
+  ros__parameters:
+    left_state_topic: "/robot/left_bumper/state"
+    left_measured_topic: "/robot/left_bumper/measured"
+    right_state_topic: "/robot/right_bumper/state"
+    right_measured_topic: "/robot/right_bumper/measured"
+    output_topic: "/collision_detection/output"

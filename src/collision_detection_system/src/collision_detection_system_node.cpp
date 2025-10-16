@@ -10,11 +10,11 @@ CollisionDetectionNode::CollisionDetectionNode(const rclcpp::NodeOptions & optio
 : rclcpp_lifecycle::LifecycleNode("collision_detection_system", options)
 {
   // Declare parameters
-  this->declare_parameter<std::string>("left_state_topic", "/left_bumper/state");
-  this->declare_parameter<std::string>("left_measured_topic", "/left_bumper/measured_value");
-  this->declare_parameter<std::string>("right_state_topic", "/right_bumper/state");
-  this->declare_parameter<std::string>("right_measured_topic", "/right_bumper/measured_value");
-  this->declare_parameter<std::string>("output_topic", "/grid_occupancy/obstacle");
+  this->declare_parameter<std::string>("left_state_topic", "/robot/left_bumper/state");
+  this->declare_parameter<std::string>("left_measured_topic", "/robot/left_bumper/measured");
+  this->declare_parameter<std::string>("right_state_topic", "/robot/right_bumper/state");
+  this->declare_parameter<std::string>("right_measured_topic", "/robot/right_bumper/measured");
+  this->declare_parameter<std::string>("output_topic", "/collision_detection/output");
 }
 
 rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn
