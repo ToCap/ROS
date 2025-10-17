@@ -10,7 +10,7 @@ CollisionDetectionNode::CollisionDetectionNode(const rclcpp::NodeOptions & optio
 : rclcpp_lifecycle::LifecycleNode("collision_detection_system", options)
 {
   // Declare parameters
-  this->declare_parameter<std::string>("left_state_topic", "/robot/left_bumper/state");
+  this->declare_parameter<std::string>("left_bumper_state_topic", "/robot/left_bumper/state");
   this->declare_parameter<std::string>("left_measured_topic", "/robot/left_bumper/measured");
   this->declare_parameter<std::string>("right_state_topic", "/robot/right_bumper/state");
   this->declare_parameter<std::string>("right_measured_topic", "/robot/right_bumper/measured");
@@ -29,10 +29,10 @@ CollisionDetectionNode::on_configure(const rclcpp_lifecycle::State &)
   RCLCPP_INFO(get_logger(), "Configuring collision_detection_node...");
 
   // Load parameters
-  left_state_topic_ = get_parameter("left_state_topic").as_string();
-  left_measured_topic_ = get_parameter("left_measured_topic").as_string();
-  right_state_topic_ = get_parameter("right_state_topic").as_string();
-  right_measured_topic_ = get_parameter("right_measured_topic").as_string();
+  left_bumper_state_topic_ = get_parameter("left_bumper_state_topic").as_string();
+  left_bumper_meas_topic_ = get_parameter("left_bumper_meas_topic").as_string();
+  right_bumper_state_topic_ = get_parameter("right_bumper_state_topic").as_string();
+  right_bumper_meas_topic_ = get_parameter("right_bumper_meas_topic").as_string();
   output_topic_ = get_parameter("output_topic").as_string();
 
   // load geometry related parameters
@@ -47,28 +47,28 @@ CollisionDetectionNode::on_configure(const rclcpp_lifecycle::State &)
 
   // Create subscriptions
   left_state_sub_ = create_subscription<std_msgs::msg::Bool>(
-    left_state_topic_, 10,
+    left_bumper_state_topic_, 10,
     [this](const std_msgs::msg::Bool::SharedPtr msg) {
       detection_.set_left_state(msg->data, now());
       this->publish_obstacle_info();
     });
 
   left_measured_sub_ = create_subscription<std_msgs::msg::Int32>(
-    left_measured_topic_, 10,
+    left_bumper_meas_topic_, 10,
     [this](const std_msgs::msg::Int32::SharedPtr msg) {
       detection_.set_left_measured(msg->data, now());
       this->publish_obstacle_info();
     });
 
   right_state_sub_ = create_subscription<std_msgs::msg::Bool>(
-    right_state_topic_, 10,
+    right_bumper_state_topic_, 10,
     [this](const std_msgs::msg::Bool::SharedPtr msg) {
       detection_.set_right_state(msg->data, now());
       this->publish_obstacle_info();
     });
 
   right_measured_sub_ = create_subscription<std_msgs::msg::Int32>(
-    right_measured_topic_, 10,
+    right_bumper_meas_topic_, 10,
     [this](const std_msgs::msg::Int32::SharedPtr msg) {
       detection_.set_right_measured(msg->data, now());
       this->publish_obstacle_info();

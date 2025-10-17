@@ -35,10 +35,10 @@ protected:
 
 private:
   // Topics
-  std::string left_state_topic_;
-  std::string left_measured_topic_;
-  std::string right_state_topic_;
-  std::string right_measured_topic_;
+  std::string left_bumper_state_topic_;
+  std::string left_bumper_meas_topic_;
+  std::string right_bumper_state_topic_;
+  std::string right_bumper_meas_topic_;
   std::string output_topic_;
 
   // ROS interfaces
