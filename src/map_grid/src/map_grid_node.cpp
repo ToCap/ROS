@@ -22,6 +22,10 @@ rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn MapGri
         "/pose", rclcpp::QoS(10),
         std::bind(&MapGridNode::poseCallback, this, std::placeholders::_1));
 
+    obstacle_sub_ = this->create_subscription<std_msgs::msg::String>(
+        "/obstacle", rclcpp::QoS(10),
+        std::bind(&MapGridNode::obstacleCallback, this, std::placeholders::_1));
+
     RCLCPP_INFO(get_logger(), "MapGrid now configured");
 
 
@@ -100,13 +104,18 @@ void MapGridNode::tactileCallback(const std_msgs::msg::Bool::SharedPtr msg)
     }
 }
 
+void MapGridNode::obstacleCallback(const std_msgs::msg::String::SharedPtr msg)
+{
+    RCLCPP_INFO(get_logger(), "Received obstacle info");
+}
+
 void MapGridNode::poseCallback(const geometry_msgs::msg::Pose2D::SharedPtr msg)
 {
 
     RCLCPP_INFO(get_logger(), "Received Pose2D: x=%.2f y=%.2f theta=%.2f",
                 msg->x, msg->y, msg->theta);
 
-    // Exemple : convertir les coordonnées en indices de grille
+
     int gx = static_cast<int>(msg->x / 0.05);  // 0.05 = résolution
     int gy = static_cast<int>(msg->y / 0.05);
 

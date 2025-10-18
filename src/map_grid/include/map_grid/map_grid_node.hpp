@@ -6,6 +6,7 @@
 #include <std_msgs/msg/bool.hpp>
 #include <nav_msgs/msg/occupancy_grid.hpp>
 #include <geometry_msgs/msg/pose2_d.hpp>
+#include "std_msgs/msg/string.hpp"
 
 namespace map_grid {
 
@@ -75,6 +76,10 @@ private:
     std::unique_ptr<MapGrid> grid_;
 
     rclcpp::Subscription<geometry_msgs::msg::Pose2D>::SharedPtr pose_sub_;
+    rclcpp::Subscription<std_msgs::msg::String>::SharedPtr obstacle_sub_;
+
+
+    void obstacleCallback(const std_msgs::msg::String::SharedPtr msg);
 
     void poseCallback(const geometry_msgs::msg::Pose2D::SharedPtr msg);
 
