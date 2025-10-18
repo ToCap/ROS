@@ -46,6 +46,28 @@ public:
      */
     void clear();
 
+
+    /**
+     * @brief Marks the robot's current position on the occupancy grid
+     *
+     * This function updates the internal grid representation to indicate
+     * the cell corresponding to the robot's position as occupied. It also
+     * stores the robot's current pose for future reference.
+     *
+     * The world coordinates (in meters) are converted into grid indices
+     * according to the map resolution before updating the grid cell.
+     *
+     * @param pose The current pose of the robot in world coordinates.
+     *             - pose.x : X position in meters
+     *             - pose.y : Y position in meters
+     *             - pose.theta : Orientation in radians
+     *
+     * @note If the computed grid coordinates are outside the map bounds,
+     *       no update is performed.
+     */
+    void markRobotPosition(const Pose2D& pose);
+
+
     /**
      * @brief Marks the cell at (gx, gy) as occupied with inflation.
      * 
@@ -53,6 +75,8 @@ public:
      * @param gy Grid Y coordinate
      */
     void setOccupied(int gx, int gy);
+
+    void updateMapWithObstacle(double  x, double y, double length, double width);
 
     /**
      * @brief Marks a ray from (x0, y0) to (x1, y1) as free.
@@ -92,6 +116,9 @@ public:
     uint8_t getFreeConfidence(int gx, int gy) const;
 
 private:
+
+    Pose2D robot_pose_;
+
     /// The 2D array representing cell states (occupied/free/unknown).
     CellState grid_[GRID_H][GRID_W];
 

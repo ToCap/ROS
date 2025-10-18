@@ -120,3 +120,72 @@ uint8_t MapGrid::getFreeConfidence(int gx, int gy) const {
     if (!inBounds(gx, gy)) return 0;
     return free_confidence_[gy][gx];
 }
+
+
+void MapGrid::markRobotPosition(const Pose2D& pose)
+{
+    // Store previous robot coordinates
+    Pose2D previous_robot_pose = this->robot_pose_;
+
+    // Update robot coordinates
+    this->robot_pose_ = pose;
+
+    // Convert new robot coordinates into grid cell indexes
+    auto [grid_x, grid_y] = this->worldToGrid(pose.x, pose.y);
+
+    // Update robot position on grid
+    if (this->inBounds(grid_x, grid_y))
+    {
+        this->setCellStatusWithInflation(grid_x, grid_y, CellState::OCCUPIED);
+    }
+
+    if ((previous_robot_pose.x != pose.x) || (previous_robot_pose.y != pose.y))
+    {
+        // Convert previous robot coordinates into grid cell indexes
+        auto [grid_x, grid_y] = this->worldToGrid(previous_robot_pose.x, previous_robot_pose.y);
+
+        // Remove previous robot position from grid
+        if (this->inBounds(grid_x, grid_y))
+        {
+            this->setCellStatusWithInflation(grid_x, grid_y, CellState::FREE);
+        }
+    }
+}
+
+
+void MapGrid::updateMapWithObstacle(double  x, double y, double length, double width)
+{
+    // Convert origin coordinates into grid cell indexes
+    auto [grid_x, grid_y] = this->worldToGrid(this->robot_pose_.x + x, this->robot_pose_.y + y);
+
+    int grid_length = static_cast<int>(y / 0.05);//length can be negative as given in robot coordinates
+    int grid_width = static_cast<int>(y / 0.05);
+
+    //int start_x = std::min(grid_x, grid_x + grid_length);
+    //int stop_x = std::max(grid_x, grid_x + grid_length);
+
+
+    for (int dx = -1; dx <= stop_x; ++dx) 
+    {
+        for (int dy = 0 dy <= 1; ++dy) 
+        {
+            int nx = gx + dx;
+            int ny = gy + dy;
+            if (inBounds(nx, ny)) 
+            {
+                grid_[ny][nx] = state;
+            }
+        }
+    }
+
+
+}
+
+
+std::pair<int, int> MapGrid::worldToGrid(double x, double y) const
+{
+    int gx = static_cast<int>(x / 0.05);
+    int gy = static_cast<int>(y / 0.05);
+    
+    return {gx, gy};
+}
