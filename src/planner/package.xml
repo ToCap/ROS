@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<package format="3">
+  <!-- ===============================
+       Basic package metadata
+  ================================== -->
+  <name>planner</name>
+  <version>0.1.0</version>
+  <description>
+    Basic planner with an orientation-aware A* path planning algorithm.
+  </description>
+
+  <maintainer email="your.email@example.com">ToCap</maintainer>
+  <license>Apache-2.0</license>
+
+  <!-- ===============================
+       Build tools
+  ================================== -->
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <!-- ===============================
+       Runtime and build dependencies
+  ================================== -->
+  <depend>rclcpp</depend>
+  <depend>rclcpp_lifecycle</depend>
+
+  <!-- ===============================
+       Test and documentation (optional)
+  ================================== -->
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <!-- ===============================
+       Export section
+  ================================== -->
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
