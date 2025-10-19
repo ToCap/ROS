@@ -1,0 +1,26 @@
+# ROS 2 Control configuration for the LEGO EV3 Gyro Sensor
+
+controller_manager:
+  ros__parameters:
+    update_rate: 50  # [Hz] frequency of controller update loop
+
+    # List of loaded controllers
+    gyro_state_broadcaster:
+      type: state_broadcaster/StateBroadcaster
+
+hardware:
+  - name: ev3_gyro
+    type: system
+    plugin: sensor_gyro_interface/SensorGyroInterface
+    parameters:
+      frame_id: "gyro_link"     # optional frame for TF
+      port: "input4"            # example parameter (if used with EV3 hardware)
+      simulate: true            # simulation mode (true = fake data)
+
+# Controller configuration section
+gyro_state_broadcaster:
+  ros__parameters:
+    type: state_broadcaster/StateBroadcaster
+    state_interfaces:
+      - gyro/angle
+      - gyro/rate
