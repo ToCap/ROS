@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<library path="libsensor_compass_interface">
+  <class
+      name="sensor_compass_interface/SensorCompassInterface"
+      type="sensor_compass_interface::SensorCompassInterface"
+      base_class_type="hardware_interface::SystemInterface">
+    <description>
+      ROS 2 hardware interface plugin for the LEGO EV3 Compass Sensor (HiTechnic).
+      Exposes following state interfaces: compass/heading.
+      Can be loaded via ros2_control.
+    </description>
+  </class>
+</library>

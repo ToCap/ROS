@@ -1,0 +1,19 @@
+# ==========================================
+# ROS 2 CONTROL CONFIGURATION
+# ==========================================
+hardware:
+  plugin: "sensor_compass_interface/SensorCompassInterface"
+  name: "sensor_compass"
+  parameters:
+    i2c_device: "/dev/i2c-1"
+    i2c_address: "0x1E"
+    poll_hz: 50.0
+
+  components:
+    - name: compass
+      type: sensor
+      class_type: hardware_interface
+      state_interfaces:
+        - name: heading
+          data_type: double
+          units: rad
