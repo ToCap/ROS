@@ -5,9 +5,7 @@
       type="sensor_gyro_interface::SensorGyroInterface"
       base_class_type="hardware_interface::SystemInterface">
     <description>
-      ROS 2 hardware interface plugin for the LEGO EV3 Gyro Sensor.
-      Exposes two state interfaces: gyro/angle and gyro/rate.
-      Can be loaded via ros2_control.
+      Minimal Hitechnic gyro sensor interface for ROS 2 control
     </description>
   </class>
 </library>

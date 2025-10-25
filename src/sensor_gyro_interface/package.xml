@@ -2,7 +2,7 @@
 <package format="3">
   <name>sensor_gyro_interface</name>
   <version>0.1.0</version>
-  <description>Minimal gyro sensor interface for ROS 2 control</description>
+  <description>Minimal Hitechnic gyro sensor interface for ROS 2 control</description>
   <maintainer email="your_email@example.com">ToCap</maintainer>
   <license>Apache-2.0</license>
 
