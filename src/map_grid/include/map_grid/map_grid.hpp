@@ -153,7 +153,16 @@ private:
     /// The 2D array representing cell states (occupied/free/unknown).
     CellState grid_[GRID_H][GRID_W];
 
-    /// Confidence values associated with cells marked as free.
+    /**
+     * @brief Confidence values associated with cells marked as free.
+     *
+     * This 2D array stores the confidence levels for each cell in the grid that 
+     * has been marked as free space. Each value represents the confidence as a 
+     * percentage, ranging from 0 to 100, where higher values indicate greater 
+     * certainty that the corresponding cell is free.
+     *
+     * The array dimensions correspond to the grid size: [GRID_H][GRID_W].
+     */
     uint8_t validity_[GRID_H][GRID_W];
 
     /**

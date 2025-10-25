@@ -150,7 +150,7 @@ void MapGrid::updateMapWithObstacle(double  x, double y, double length, double w
     // HINTS : length might be negative
 
     // Convert validity information
-    validity_internal = validity * 100;
+    double validity_internal = validity * 100;
 
     for (int dx = start_x; dx <= stop_x; ++dx) 
     {
