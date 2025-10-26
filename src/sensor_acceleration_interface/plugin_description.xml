@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<library path="libsensor_acceleration_interface">
+  <class
+      name="sensor_acceleration_interface/SensorAccelerationInterface"
+      type="sensor_acceleration_interface::SensorAccelerationInterface"
+      base_class_type="hardware_interface::SystemInterface">
+    <description>
+      Minimal Hitechnic acceleration sensor interface for ROS 2 control
+    </description>
+  </class>
+</library>

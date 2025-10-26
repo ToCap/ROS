@@ -1,0 +1,26 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 50   # Control loop frequency (Hz)
+
+    # Declare the hardware interface system
+    sensor_acceleration_interface_system:
+      type: system
+      hardware:
+        plugin: "sensor_acceleration_interface/SensorAccelerationInterface"
+
+        # Parameters for your hardware interface (match the .hpp init)
+        i2c_device: "/dev/i2c-1"
+        i2c_address: "0x02"
+
+      sensors:
+        - name: "sensor_acceleration_interface_sensor"
+          state_interfaces:
+            - accel_x
+            - accel_y
+            - accel_z
+
+
+# Example controller to publish in ROS topics
+sensor_acceleration_interface_broadcaster:
+  ros__parameters:
+    type: sensor_msgs/msg/Imu

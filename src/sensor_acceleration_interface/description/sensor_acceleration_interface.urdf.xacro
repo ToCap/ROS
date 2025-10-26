@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<robot name="sensor_acceleration_interface_robot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- Link representing the accelerometer -->
+  <link name="nxt_accel_link">
+    <visual>
+      <geometry>
+        <!-- Small box to represent the sensor -->
+        <box size="0.02 0.02 0.02"/>
+      </geometry>
+      <material name="gray">
+        <color rgba="0.6 0.6 0.6 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.02 0.02 0.02"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.01"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6"/>
+    </inertial>
+  </link>
+
+  <!-- Replace this parent link with your robot link (ex: base_link, head_link, etc.) -->
+  <joint name="nxt_accel_mount" type="fixed">
+    <parent link="base_link"/>
+    <child link="nxt_accel_link"/>
+    <origin xyz="0.05 0 0.10" rpy="0 0 0"/>
+  </joint>
+
+  <!-- ros2_control Hardware Interface -->
+  <ros2_control name="sensor_acceleration_interface_system" type="system">
+    <hardware>
+      <plugin>sensor_acceleration_interface/SensorAccelerationInterface</plugin>
+
+      <!-- Sensors parameters -->
+      <param name="i2c_device">/dev/i2c-1</param>
+      <param name="i2c_address">0x02</param>
+    </hardware>
+
+    <sensor name="sensor_acceleration_interface_sensor">
+      <!-- State interfaces made available by your code -->
+      <state_interface name="accel_x"/>
+      <state_interface name="accel_y"/>
+      <state_interface name="accel_z"/>
+    </sensor>
+  </ros2_control>
+
+</robot>
