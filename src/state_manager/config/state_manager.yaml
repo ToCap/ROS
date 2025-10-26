@@ -1,0 +1,7 @@
+state_manager:
+  ros__parameters:
+    monitored_nodes:
+      - "controller"
+      - "perception"
+      - "localization"
+    evaluation_period_s: 0.5
