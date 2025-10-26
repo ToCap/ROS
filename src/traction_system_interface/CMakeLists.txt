@@ -1,6 +1,12 @@
 cmake_minimum_required(VERSION 3.5)
 project(traction_system_interface)
 
+# === Compiler options ===
+if(NOT CMAKE_CXX_STANDARD)
+  set(CMAKE_CXX_STANDARD 17)
+endif()
+
+# === Find required ROS 2 packages ===
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(ros2_control REQUIRED)
@@ -9,8 +15,12 @@ find_package(pal_statistics REQUIRED)
 find_package(pal_statistics_msgs REQUIRED)
 find_package(realtime_tools REQUIRED)
 
-include_directories(include)
+# === Include header files ===
+include_directories(
+  include
+)
 
+# === Build the shared library for the plugin ===
 add_library(${PROJECT_NAME}_lib SHARED src/traction_system_interface.cpp)
 target_include_directories(${PROJECT_NAME}_lib PUBLIC include)
 
@@ -22,6 +32,7 @@ target_include_directories(${PROJECT_NAME}_lib PUBLIC
   /opt/ros/jazzy/include/hardware_interface
 )
 
+# === Link dependencies ===
 ament_target_dependencies(${PROJECT_NAME}_lib
   ros2_control
   pluginlib
@@ -31,7 +42,14 @@ ament_target_dependencies(${PROJECT_NAME}_lib
   realtime_tools
 )
 
+# === Export the ROS 2 plugin ===
 pluginlib_export_plugin_description_file(hardware_interface plugin_description.xml)
+
+# === Installation rules ===
+install(
+  DIRECTORY include/
+  DESTINATION include
+)
 
 install(
   TARGETS ${PROJECT_NAME}_lib
