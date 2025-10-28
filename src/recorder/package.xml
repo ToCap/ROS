@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>recorder</name>
+  <version>0.1.0</version>
+  <description>Simple log recorder in MCAP to allow analysis and replay</description>
+  <maintainer email="ToCap@github.com">ToCap</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>rclcpp</depend>
+  <depend>std_msgs</depend>
+  <depend>mcap</depend>
+</package>
