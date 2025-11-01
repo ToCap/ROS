@@ -3,4 +3,5 @@ install/
 log/
 .colcon_install_layout
 *.pyc
+*.bak
 __pycache__/
