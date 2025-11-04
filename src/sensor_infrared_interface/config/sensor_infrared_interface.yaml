@@ -1,0 +1,30 @@
+# ==========================================
+# ROS 2 CONTROL CONFIGURATION
+# ==========================================
+hardware:
+  - name: infrared_sensor
+    type: system
+    plugin: "sensor_infrared_interface/SensorInfraredInterface"
+    parameters:
+      topic_name: "/sim/infrared/distance"
+
+
+# # ==========================================
+# # ROS 2 CONTROL CONFIGURATION
+# # ==========================================
+# hardware:
+#   - name: infrared_sensor
+#     type: system
+#     plugin: "sensor_infrared_interface/SensorInfraredInterface"
+#     parameters:
+#       topic_name: "/sim/infrared/distance"
+
+# # ==========================================
+# # ROS-GAZEBO BRIDGE CONFIGURATION
+# # ==========================================
+# bridges:
+#   - ros_topic_name: "/sim/infrared/distance"
+#     gz_topic_name: "/world/default/model/infrared_bot/link/infrared_link/sensor/infrared_sensor/range"
+#     ros_type_name: "sensor_msgs/msg/Range"
+#     gz_type_name: "gz.msgs.Range"
+#     direction: GZ_TO_ROS

@@ -1,0 +1,10 @@
+<library path="sensor_infrared_interface">
+  <class
+    name="sensor_infrared_interface/SensorInfraredInterface"
+    type="sensor_infrared_interface::SensorInfraredInterface"
+    base_class_type="hardware_interface::SystemInterface">
+    <description>
+      Minimal ultrasonic sensor interface for ROS 2 control
+    </description>
+  </class>
+</library>

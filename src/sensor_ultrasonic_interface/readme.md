@@ -1,4 +1,4 @@
-# ![Touch Sensor](docs/ultrasonic_sensor.png) Ultrasonic Sensor Interface
+# ![Ultrasonic Sensor](docs/ultrasonic_sensor.png) Ultrasonic Sensor Interface
 
 The Ultrasonic Sensor can measure the distance to an object in front of it. It does this by sending out sound waves and measuring how long it takes the sound to reflect back to the sensor. The sound frequency is too high for you to hear (“ultrasonic”).
 

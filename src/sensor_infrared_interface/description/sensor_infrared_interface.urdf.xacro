@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="traction_robot">
+
+
+<ros2_control name="InfraredSystem" type="system">
+    <hardware>
+      <!-- Custom ROS 2 Control plugin -->
+      <plugin>sensor_infrared_interface/SensorInfraredInterface</plugin>
+
+      <!-- Topic published by Gazebo Sim-->
+      <param name="topic_name">/sim/infrared/distance</param>
+    </hardware>
+
+    <!-- Virtual joint used to expose the infrared reading -->
+    <joint name="infrared_joint">
+      <state_interface name="distance"/>
+    </joint>
+  </ros2_control>
+
+
+  <!-- dummy reference for joint -->
+   <link name="base_link">
+    <visual>
+      <geometry>
+        <box size="0.0001 0.00001 0.0000005"/>
+      </geometry>
+      <material name="gray">
+        <color rgba="0.7 0.7 0.7 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.0001 0.00001 0.0000005"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.1"/>
+      <inertia ixx="0.001" iyy="0.001" izz="0.001"/>
+    </inertial>
+  </link>
+
+
+  <!-- ==========================
+       INFRARED SENSOR LINK
+       ========================== -->
+  <link name="infrared_link">
+    <visual>
+      <geometry>
+        <box size="0.32 0.56 0.24" />
+      </geometry>
+      <origin xyz="0 0 0.02" rpy="0 0 0"/>
+      <material name="black">
+        <color rgba="0.1 0.1 0.1 1.0"/>
+      </material>
+    </visual>
+      <collision>
+      <geometry>
+        <box size="0.32 0.56 0.24" />
+      </geometry>
+    </collision>
+  </link>
+
+    <joint name="infrared_mount" type="fixed">
+      <parent link="base_link" />
+      <child link="infrared_link" />
+      <xacro:insert_block name="origin" />
+    </joint>
+
+ <gazebo reference="infrared_link">
+<sensor name="infrared_sensor" type="ray">
+      <always_on>true</always_on>
+      <update_rate>30</update_rate>
+      <visualize>true</visualize>
+      <pose>0 0 0 0 0 0</pose>
+  <ray>
+    <scan>
+      <horizontal>
+        <samples>1</samples>
+        <resolution>1</resolution>
+        <min_angle>0</min_angle>
+        <max_angle>0</max_angle>
+      </horizontal>
+    </scan>
+    <range>
+      <min>0.02</min>
+      <max>2.0</max>
+      <resolution>0.01</resolution>
+    </range>
+  </ray>
+
+    <!-- ROS 2 plugin for Gazebo Sim -->
+      <plugin name="ros_gz_float_distance" filename="libros_gz_sim_bridge_system.so">
+        <ros>
+          <namespace>/sim</namespace>
+          <argument>topic:=infrared/distance</argument>
+          <argument>ros_type:=std_msgs/Float64</argument>
+          <argument>gz_type:=gz.msgs.Double</argument>
+          <argument>direction:=GZ_TO_ROS</argument>
+        </ros>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+</robot>
