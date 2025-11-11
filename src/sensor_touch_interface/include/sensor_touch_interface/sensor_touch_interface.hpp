@@ -18,10 +18,8 @@ namespace sensor_touch_interface
 {
 
 /**
- * @brief Implémentation d’un capteur simple (type TouchSensor)
- * basé sur la nouvelle API ros2_control (ROS 2 Jazzy)
- * et intégrant un pont avec Gazebo Ignition via un topic ROS2.
- */
+* @brief Minimal Lego Mindstorm EV3 touch sensor interface for ROS 2 control
+*/
 class SensorTouchInterface : public hardware_interface::SystemInterface
 {
 public:
