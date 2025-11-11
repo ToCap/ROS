@@ -1,0 +1,9 @@
+<library path="sensor_color_interface">
+  <class name="sensor_color_interface/SensorColorInterface"
+         type="sensor_color_interface::SensorColorInterface"
+         base_class_type="hardware_interface::SystemInterface">
+    <description>
+      Minimal Lego Mindstorm EV3 color sensor interface for ROS 2 control
+    </description>
+  </class>
+</library>
