@@ -29,8 +29,7 @@ CallbackReturn SensorColorInterface::on_init(const hardware_interface::HardwareI
       info.hardware_parameters.count("port_number") == 0 ||
       info.hardware_parameters.count("mode") == 0)
   {
-    RCLCPP_ERROR(rclcpp::get_logger("SensorColorInterface"),
-                 "Missing required hardware parameters: device_path, port_number, or mode.");
+    RCLCPP_ERROR(rclcpp::get_logger("SensorColorInterface"), "Missing required hardware parameters: device_path, port_number, or mode.");
     return CallbackReturn::ERROR;
   }
 
@@ -38,8 +37,7 @@ CallbackReturn SensorColorInterface::on_init(const hardware_interface::HardwareI
   port_number_ = std::stoi(info.hardware_parameters.at("port_number"));
   mode_ = info.hardware_parameters.at("mode");
 
-  RCLCPP_INFO(rclcpp::get_logger("SensorColorInterface"),
-              "Initialized SensorColorInterface on %s (port %d) mode %s",
+  RCLCPP_INFO(rclcpp::get_logger("SensorColorInterface"),"Initialized SensorColorInterface on %s (port %d) mode %s",
               device_path_.c_str(), port_number_, mode_.c_str());
 
   return CallbackReturn::SUCCESS;
@@ -47,20 +45,19 @@ CallbackReturn SensorColorInterface::on_init(const hardware_interface::HardwareI
 
 CallbackReturn SensorColorInterface::on_configure(const rclcpp_lifecycle::State &)
 {
-  RCLCPP_INFO(rclcpp::get_logger("SensorColorInterface"), "Configuring EV3 Color Sensor...");
+  RCLCPP_INFO(rclcpp::get_logger("SensorColorInterface"), "Configuration of color sensor interface");
   return CallbackReturn::SUCCESS;
 }
 
 CallbackReturn SensorColorInterface::on_activate(const rclcpp_lifecycle::State &)
 {
-  RCLCPP_INFO(rclcpp::get_logger("SensorColorInterface"), "Activating EV3 Color Sensor...");
+  RCLCPP_INFO(rclcpp::get_logger("SensorColorInterface"), "Activation of color sensor interface");
 
   // Open the sensor device (example only)
   device_fd_ = open(device_path_.c_str(), O_RDONLY);
   if (device_fd_ < 0)
   {
-    RCLCPP_ERROR(rclcpp::get_logger("SensorColorInterface"),
-                 "Failed to open sensor device at %s", device_path_.c_str());
+    RCLCPP_ERROR(rclcpp::get_logger("SensorColorInterface"),"Failed to open sensor device at %s", device_path_.c_str());
     return CallbackReturn::ERROR;
   }
 
@@ -71,7 +68,7 @@ CallbackReturn SensorColorInterface::on_activate(const rclcpp_lifecycle::State &
 
 CallbackReturn SensorColorInterface::on_deactivate(const rclcpp_lifecycle::State &)
 {
-  RCLCPP_INFO(rclcpp::get_logger("SensorColorInterface"), "Deactivating EV3 Color Sensor...");
+  RCLCPP_INFO(rclcpp::get_logger("SensorColorInterface"), "Deactivation ofcolor sensor interface");
   if (device_fd_ >= 0)
   {
     close(device_fd_);

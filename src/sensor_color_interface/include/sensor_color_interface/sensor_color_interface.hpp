@@ -44,41 +44,56 @@ public:
   ~SensorColorInterface() override = default;
 
   /**
-   * @brief Initialize hardware with configuration parameters.
-   * 
-   * @param info Hardware information loaded from the URDF or YAML file.
-   * @return hardware_interface::CallbackReturn SUCCESS if initialization succeeded, ERROR otherwise.
+   * @brief Initializes the hardware interface from the provided hardware information.
+   *
+   * This function reads configuration parameters from the `HardwareInfo` structure
+   * provided by the ROS 2 Control system and sets up the internal state and command
+   * variables accordingly.
+   *
+   * @param info Hardware information containing configuration and parameters.
+   * @return CallbackReturn::SUCCESS if initialization succeeded,
+   *         CallbackReturn::ERROR otherwise.
    */
   hardware_interface::CallbackReturn on_init(const hardware_interface::HardwareInfo & info) override;
 
   /**
-   * @brief Configure the sensor before activation.
+   * @brief Lifecycle transition: Configure the node.
+   * Allocates and initializes the map and publisher.
    * 
-   * @param previous_state Lifecycle state before entering "configure".
-   * @return hardware_interface::CallbackReturn indicating success or failure.
+   * @param state Current lifecycle state.
+   * @return CallbackReturn indicating success or failure.
    */
   hardware_interface::CallbackReturn on_configure(const rclcpp_lifecycle::State & previous_state) override;
 
   /**
-   * @brief Activate the hardware interface (open device or start communication).
+   * @brief Lifecycle transition: Activate the node.
+   * Activates the publisher and publishes initial map.
    * 
-   * @param previous_state Lifecycle state before entering "activate".
-   * @return hardware_interface::CallbackReturn indicating success or failure.
+   * @param state Current lifecycle state.
+   * @return CallbackReturn indicating success or failure.
    */
   hardware_interface::CallbackReturn on_activate(const rclcpp_lifecycle::State & previous_state) override;
 
   /**
-   * @brief Deactivate the hardware interface (close connections).
+   * @brief Lifecycle transition: Deactivate the node.
+   * Deactivates the publisher.
    * 
-   * @param previous_state Lifecycle state before entering "deactivate".
-   * @return hardware_interface::CallbackReturn indicating success or failure.
+   * @param state Current lifecycle state.
+   * @return CallbackReturn indicating success or failure.
    */
   hardware_interface::CallbackReturn on_deactivate(const rclcpp_lifecycle::State & previous_state) override;
 
   /**
-   * @brief Export all read-only state interfaces provided by this sensor.
-   * 
-   * @return Vector of hardware_interface::StateInterface containing sensor data.
+   * @brief Export the available state interfaces for this hardware.
+   *
+   * For this sensor, a single state interface is provided:
+   * - "red component": the current mesure of red color from RGB
+   * - "green component": the current mesure of green color from RGB
+   * - "blue component": the current mesure of blue color from RGB
+   * - "ambient intensity" : measured ambient light intensity (0–100%)
+   * - "reflected intensity" : measured reflected light intensity (0–100%)
+   *
+   * @return A vector containing the state interface(s).
    */
   std::vector<hardware_interface::StateInterface> export_state_interfaces() override;
 
