@@ -1,0 +1,4 @@
+map_grid_node:
+  ros__parameters:
+    robot_length: 0.20   # meters
+    robot_width: 0.15    # meters

@@ -96,6 +96,12 @@ private:
      * @return nav_msgs::msg::OccupancyGrid The formatted ROS message.
      */
     nav_msgs::msg::OccupancyGrid toOccupancyGridMsg(const MapGrid& grid, const std::string &frame_id);
+
+private:
+    // configuration
+    double robot_length_;
+    double robot_width_;
+
 };
 
 }  // namespace map_grid

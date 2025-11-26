@@ -4,17 +4,25 @@
 using namespace map_grid;
 using namespace std::chrono_literals;
 
-/// @brief Constructor.
-/// @param options NodeOptions passed to the LifecycleNode base class.
+
 MapGridNode::MapGridNode(const rclcpp::NodeOptions & options)
 : rclcpp_lifecycle::LifecycleNode("map_grid_node", options) {}
 
-/// @brief Lifecycle callback when configuring the node.
-/// Initializes the map grid and publisher.
-/// @param[in] state The current lifecycle state (not used).
-/// @return SUCCESS on successful configuration.
+
 rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn MapGridNode::on_configure(const rclcpp_lifecycle::State &)
 {
+    // declare parameters
+    this->declare_parameter<double>("robot_length", 0.40);
+    this->declare_parameter<double>("robot_width", 0.30);
+
+    // load parameters
+    robot_length_ = this->get_parameter("robot_length").as_double();
+    robot_width_  = this->get_parameter("robot_width").as_double();
+
+    RCLCPP_INFO(get_logger(), "Robot dimensions loaded: length=%.3f m, width=%.3f m",
+                robot_length_, robot_width_);
+
+
     grid_ = std::make_unique<MapGrid>();
     grid_pub_ = this->create_publisher<nav_msgs::msg::OccupancyGrid>("grid_map", rclcpp::QoS(10));
 
@@ -32,10 +40,7 @@ rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn MapGri
     return rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn::SUCCESS;
 }
 
-/// @brief Lifecycle callback when activating the node.
-/// Activates the publisher and publishes an example occupancy grid.
-/// @param[in] state The current lifecycle state (not used).
-/// @return SUCCESS on successful activation.
+
 rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn MapGridNode::on_activate(const rclcpp_lifecycle::State &) 
 {
     grid_pub_->on_activate();
@@ -98,9 +103,9 @@ void MapGridNode::tactileCallback(const std_msgs::msg::Bool::SharedPtr msg)
         // Exemple simple : on marque la cellule (50, 50) occupée
         grid_->setOccupied(50, 50);
 
-        // Republier la map mise à jour
-        auto msg = toOccupancyGridMsg(*grid_, "map");
-        grid_pub_->publish(msg);
+        // force update of map
+        auto grid_msg = toOccupancyGridMsg(*grid_, "map");
+        grid_pub_->publish(grid_msg);
     }
 }
 
