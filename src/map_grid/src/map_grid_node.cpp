@@ -99,6 +99,8 @@ void MapGridNode::tactileCallback(const std_msgs::msg::Bool::SharedPtr msg)
 {
     if (msg->data) 
     {
+        // get latest robot position
+
         RCLCPP_INFO(get_logger(), "Tactile sensor triggered");
         // Exemple simple : on marque la cellule (50, 50) occupée
         grid_->setOccupied(50, 50);
@@ -120,8 +122,14 @@ void MapGridNode::poseCallback(const geometry_msgs::msg::Pose2D::SharedPtr msg)
     {
         RCLCPP_INFO(get_logger(), "Received Pose2D: x=%.2f y=%.2f theta=%.2f", msg->x, msg->y, msg->theta);
 
+        // Convert ROS message to internal MapGrid Pose2D
+        map_grid::Pose2D robot_pose;
+        robot_pose.x = msg->x;
+        robot_pose.y = msg->y;
+        robot_pose.theta = msg->theta;
+
         // update the robot's current position on the occupancy grid
-        this->grid_->markRobotPosition(msg);
+        this->grid_->markRobotPosition(robot_pose);
 
         // force update of map
         auto grid_msg = toOccupancyGridMsg(*grid_, "map");
