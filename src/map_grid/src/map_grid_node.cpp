@@ -111,18 +111,14 @@ void MapGridNode::obstacleCallback(const std_msgs::msg::String::SharedPtr msg)
 
 void MapGridNode::poseCallback(const geometry_msgs::msg::Pose2D::SharedPtr msg)
 {
-
-    RCLCPP_INFO(get_logger(), "Received Pose2D: x=%.2f y=%.2f theta=%.2f",
-                msg->x, msg->y, msg->theta);
-
-
-    int gx = static_cast<int>(msg->x / 0.05);  // 0.05 = résolution
-    int gy = static_cast<int>(msg->y / 0.05);
-
-    if (grid_ && grid_->inBounds(gx, gy))
+    if (msg->data) 
     {
-        grid_->setOccupied(gx, gy);
+        RCLCPP_INFO(get_logger(), "Received Pose2D: x=%.2f y=%.2f theta=%.2f", msg->x, msg->y, msg->theta);
 
+        // update the robot's current position on the occupancy grid
+        this->grid_->markRobotPosition(msg);
+
+        // force update of map
         auto grid_msg = toOccupancyGridMsg(*grid_, "map");
         grid_pub_->publish(grid_msg);
     }

@@ -12,7 +12,6 @@ int main(int argc, char ** argv)
     
     auto node = std::make_shared<map_grid::MapGridNode>(rclcpp::NodeOptions{});
 
-    // Création d’un exécuteur compatible LifecycleNode
     rclcpp::executors::SingleThreadedExecutor exec;
     exec.add_node(node->get_node_base_interface());
 
