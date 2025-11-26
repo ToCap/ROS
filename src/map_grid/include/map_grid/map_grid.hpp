@@ -23,6 +23,12 @@ struct Pose2D
     double theta;
 };
 
+struct RobotSize {
+    double length;
+    double width;
+};
+
+
 /**
  * @enum CellState
  * @brief Represents the possible states of a grid cell.
@@ -146,9 +152,22 @@ public:
      */
     uint8_t getFreeConfidence(int gx, int gy) const;
 
+    /**
+     * @brief Sets the dimensions of the robot for footprint calculations.
+     *
+     * This method updates the robot's length and width, which are used
+     * to compute the grid cells occupied by the robot. It can be called
+     * at any time to modify the robot size without recreating the map grid.
+     *
+     * @param length The length of the robot in meters.
+     * @param width The width of the robot in meters.
+     */
+    void setRobotDimensions(double length, double width);
+
 private:
 
     Pose2D robot_pose_;
+    RobotSize robot_size_;
 
     /// The 2D array representing cell states (occupied/free/unknown).
     CellState grid_[GRID_H][GRID_W];

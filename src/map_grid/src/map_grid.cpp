@@ -7,13 +7,11 @@
 
 using namespace map_grid;
 
-/// @brief Default constructor.
-/// Initializes the grid by clearing all cells to UNKNOWN state.
+
 MapGrid::MapGrid() {
     clear();
 }
 
-/// @brief Clears the grid by setting all cells to UNKNOWN and resetting free confidence.
 void MapGrid::clear() 
 {
     for (int y = 0; y < GRID_H; ++y) 
@@ -88,20 +86,13 @@ void MapGrid::markFreeRay(int x0, int y0, int x1, int y1)
     }
 }
 
-/// @brief Returns the cell state at the specified coordinates.
-/// @param gx X coordinate.
-/// @param gy Y coordinate.
-/// @return CellState enum indicating the occupancy status of the cell.
-/// Returns UNKNOWN if coordinates are out of bounds.
+
 CellState MapGrid::getCell(int gx, int gy) const {
     if (!inBounds(gx, gy)) return CellState::UNKNOWN;
     return grid_[gy][gx];
 }
 
-/// @brief Returns the confidence level of a free cell at the specified coordinates.
-/// @param gx X coordinate.
-/// @param gy Y coordinate.
-/// @return Confidence value [0-255]. Returns 0 if out of bounds.
+
 uint8_t MapGrid::getFreeConfidence(int gx, int gy) const 
 {
     if (!inBounds(gx, gy)) return 0;
@@ -163,6 +154,12 @@ void MapGrid::updateMapWithObstacle(double  x, double y, double length, double w
             }
         }
     } 
+}
+
+void MapGrid::setRobotDimensions(double length, double width)
+{
+    this->robot_size_->length = length;
+    this->robot_size_->width = width;
 }
 
 
