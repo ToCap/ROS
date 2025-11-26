@@ -6,7 +6,9 @@ if(NOT CMAKE_CXX_STANDARD)
   set(CMAKE_CXX_STANDARD 17)
 endif()
 
-# === Find required ROS 2 packages ===
+# -------------------------------
+# Packages
+# -------------------------------
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_lifecycle REQUIRED)
@@ -18,7 +20,9 @@ include_directories(
   include
 )
 
-# === Build the shared library for the plugin ===
+# -------------------------------
+# Library
+# -------------------------------
 add_library(${PROJECT_NAME} SHARED
   src/sensor_gyro_interface.cpp
 )
@@ -45,8 +49,10 @@ install(
   DESTINATION include
 )
 
-install(
-  TARGETS ${PROJECT_NAME}
+# -------------------------------
+# Install targets
+# -------------------------------
+install(TARGETS ${PROJECT_NAME}
   EXPORT export_${PROJECT_NAME}
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
@@ -74,4 +80,7 @@ ament_export_libraries(
   ${PROJECT_NAME}
 )
 
+# -------------------------------
+# Package
+# -------------------------------
 ament_package()
