@@ -118,23 +118,21 @@ void MapGridNode::obstacleCallback(const std_msgs::msg::String::SharedPtr msg)
 
 void MapGridNode::poseCallback(const geometry_msgs::msg::Pose2D::SharedPtr msg)
 {
-    if (msg->data) 
-    {
-        RCLCPP_INFO(get_logger(), "Received Pose2D: x=%.2f y=%.2f theta=%.2f", msg->x, msg->y, msg->theta);
 
-        // Convert ROS message to internal MapGrid Pose2D
-        map_grid::Pose2D robot_pose;
-        robot_pose.x = msg->x;
-        robot_pose.y = msg->y;
-        robot_pose.theta = msg->theta;
+    RCLCPP_INFO(get_logger(), "Received Pose2D: x=%.2f y=%.2f theta=%.2f", msg->x, msg->y, msg->theta);
 
-        // update the robot's current position on the occupancy grid
-        this->grid_->markRobotPosition(robot_pose);
+    // Convert ROS message to internal MapGrid Pose2D
+    map_grid::Pose2D robot_pose;
+    robot_pose.x = msg->x;
+    robot_pose.y = msg->y;
+    robot_pose.theta = msg->theta;
 
-        // force update of map
-        auto grid_msg = toOccupancyGridMsg(*grid_, "map");
-        grid_pub_->publish(grid_msg);
-    }
+    // update the robot's current position on the occupancy grid
+    this->grid_->markRobotPosition(robot_pose);
+
+    // force update of map
+    auto grid_msg = toOccupancyGridMsg(*grid_, "map");
+    grid_pub_->publish(grid_msg);
 }
 
 /// @brief Converts the internal MapGrid to a ROS occupancy grid message.
