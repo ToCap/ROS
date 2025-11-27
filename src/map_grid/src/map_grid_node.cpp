@@ -114,6 +114,20 @@ void MapGridNode::tactileCallback(const std_msgs::msg::Bool::SharedPtr msg)
 void MapGridNode::obstacleCallback(const std_msgs::msg::String::SharedPtr msg)
 {
     RCLCPP_INFO(get_logger(), "Received obstacle info");
+
+    // get latest robot position
+    Pose2D robot_pose_ = grid_->getRobotPose();
+
+    // parse obstacle data from message (example: "x y length width val")
+    double obstacle_x, obstacle_y, length, width, validity;
+    //TODO : implement message decoding 
+
+    // convert  obstacle position from robot frame to map frame
+    double x = robot_pose_.x + cos(robot_pose_.theta) * obstacle_x - sin(robot_pose_.theta) * obstacle_y;
+    double y = robot_pose_.y + sin(robot_pose_.theta) * obstacle_x + cos(robot_pose_.theta) * obstacle_y;
+
+    // update the occupancy grid with the obstacle
+    grid_->updateMapWithObstacle(x, y, length, width, validity);
 }
 
 void MapGridNode::poseCallback(const geometry_msgs::msg::Pose2D::SharedPtr msg)
