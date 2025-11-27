@@ -158,8 +158,8 @@ void MapGrid::updateMapWithObstacle(double  x, double y, double length, double w
 
 void MapGrid::setRobotDimensions(double length, double width)
 {
-    this->robot_size_->length = length;
-    this->robot_size_->width = width;
+    this->robot_size_.length = length;
+    this->robot_size_.width = width;
 }
 
 
