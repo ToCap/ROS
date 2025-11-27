@@ -8,7 +8,14 @@
 using namespace map_grid;
 
 
-MapGrid::MapGrid() {
+MapGrid::MapGrid()
+{
+    // initialize default values
+    this->robot_pose_.x = std::numeric_limits<double>::infinity();
+    this->robot_pose_.y = std::numeric_limits<double>::infinity();
+    this->robot_pose_.theta = std::numeric_limits<double>::infinity();
+    // HINTS : invalid value is intentionnaly used to detect first valid update
+
     clear();
 }
 
@@ -23,6 +30,13 @@ void MapGrid::clear()
         }
     }
 }
+
+
+Pose2D MapGrid::getRobotPose() const
+{
+    return this->robot_pose_;
+}
+
 
 
 bool MapGrid::inBounds(int gx, int gy) const 

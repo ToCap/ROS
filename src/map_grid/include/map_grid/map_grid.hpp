@@ -153,6 +153,18 @@ public:
     uint8_t getFreeConfidence(int gx, int gy) const;
 
     /**
+     * @brief Returns the current pose of the robot in the map frame.
+     *
+     * This method retrieves the last pose provided through
+     * markRobotPosition(). If the pose has not been initialized yet (robot_pose_.x is +∞),
+     * the returned pose contains infinite values. Callers should
+     * check std::isinf(pose.x) to detect an uninitialized pose.
+     *
+     * @return Pose2D The robot pose {x, y, theta} in map coordinates.
+    */
+    Pose2D getRobotPose() const;
+
+    /**
      * @brief Sets the dimensions of the robot for footprint calculations.
      *
      * This method updates the robot's length and width, which are used
