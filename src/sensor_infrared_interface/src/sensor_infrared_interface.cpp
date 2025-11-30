@@ -11,19 +11,18 @@ hardware_interface::CallbackReturn SensorInfraredInterface::on_init(const hardwa
     return hardware_interface::CallbackReturn::ERROR;
   }
 
-  // Retrieve topic name from hardware parameters
+  // Read configuration from hardware parameters
   if (info_.hardware_parameters.find("topic_name") != info_.hardware_parameters.end())
   {
     topic_name_ = info_.hardware_parameters.at("topic_name");
   }
   else
   {
-    RCLCPP_ERROR(
-      rclcpp::get_logger("SensorInfraredInterface"),
-      "Missing parameter 'topic_name' in hardware config");
+    RCLCPP_ERROR(rclcpp::get_logger("SensorInfraredInterface"), "Missing parameter 'topic_name' in hardware config");
     return hardware_interface::CallbackReturn::ERROR;
   }
 
+  // initialize sensor default value
   distance_ = 0.0;
   node_ = std::make_shared<rclcpp::Node>("infrared_sim_node");
 

@@ -84,7 +84,7 @@ public:
   return_type read(const rclcpp::Time & time, const rclcpp::Duration & period) override;
 
   /**
-   * @brief Write commands to the simulated hardware.
+   * @brief Write commands to the simulated hardware
    *
    * Since this is a passive sensor, no commands are sent to the hardware.
    *
@@ -95,20 +95,20 @@ public:
   return_type write(const rclcpp::Time & time, const rclcpp::Duration & period) override;
 
 private:
-  /// ROS 2 node that handles the subscription to the simulated topic.
+  /// ROS 2 node that handles the subscription to the simulated topic
   std::shared_ptr<rclcpp::Node> node_;
 
-  /// Subscription to the simulated distance topic.
+  /// Subscription to the simulated distance topic
   rclcpp::Subscription<std_msgs::msg::Float64>::SharedPtr sub_;
 
   /// Background thread for spinning the node.
   std::thread executor_thread_;
 
-  /// Name of the topic used to receive simulated distance data.
+  /// Name of the topic used to receive simulated distance data
   std::string topic_name_;
 
 private:
-  double distance_{0.0};/// Latest measured distance (in meters).
+  double distance_{0.0};/// Latest measured distance (in meters)
 };
 
 } // namespace sensor_infrared
