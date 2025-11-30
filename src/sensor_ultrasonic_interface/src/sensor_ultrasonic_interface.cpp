@@ -11,16 +11,14 @@ hardware_interface::CallbackReturn SensorUltrasonicInterface::on_init(const hard
     return hardware_interface::CallbackReturn::ERROR;
   }
 
-  // Retrieve topic name from hardware parameters
+  // Read configuration from hardware parameters
   if (info_.hardware_parameters.find("topic_name") != info_.hardware_parameters.end())
   {
     topic_name_ = info_.hardware_parameters.at("topic_name");
   }
   else
   {
-    RCLCPP_ERROR(
-      rclcpp::get_logger("SensorUltrasonicInterface"),
-      "Missing parameter 'topic_name' in hardware config");
+    RCLCPP_ERROR(rclcpp::get_logger("SensorUltrasonicInterface"), "Missing parameter 'topic_name' in hardware config");
     return hardware_interface::CallbackReturn::ERROR;
   }
 
@@ -75,7 +73,7 @@ SensorUltrasonicInterface::~SensorUltrasonicInterface()
   }
 }
 
-}  // namespace ultrasonic_sim
+}  // namespace sensor_ultrasonic
 
 // Export the plugin to ROS 2
 PLUGINLIB_EXPORT_CLASS(sensor_ultrasonic_interface::SensorUltrasonicInterface, hardware_interface::SystemInterface)

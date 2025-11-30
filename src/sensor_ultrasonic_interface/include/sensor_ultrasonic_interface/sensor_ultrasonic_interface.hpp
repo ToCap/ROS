@@ -95,7 +95,7 @@ public:
   return_type write(const rclcpp::Time & time, const rclcpp::Duration & period) override;
 
 private:
-  /// ROS 2 node that handles the subscription to the simulated topic.
+  /// ROS 2 node that handles the subscription to the simulated topic
   std::shared_ptr<rclcpp::Node> node_;
 
   /// Subscription to the simulated distance topic.
