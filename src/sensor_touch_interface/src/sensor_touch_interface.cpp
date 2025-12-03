@@ -62,7 +62,7 @@ std::vector<hardware_interface::StateInterface> SensorTouchInterface::export_sta
   state_interfaces.emplace_back(
     hardware_interface::StateInterface(
       info_.sensors[0].name,
-      hardware_interface::HW_IF_POSITION,  // on utilise "position" pour un capteur booléen simple
+      hardware_interface::HW_IF_POSITION,  // use "position" for a simple boolean sensor
       &touch_state_));
   return state_interfaces;
 }

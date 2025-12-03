@@ -18,19 +18,32 @@ namespace sensor_touch_interface
 {
 
 /**
-* @brief Minimal Lego Mindstorm EV3 touch sensor interface for ROS 2 control
-*/
+ * @class SensorInfraredInterface
+ * @brief Hardware interface implementation for a Lego Mindstorm Infrared sensor (EV3)
+ *
+ * This class provides a ROS 2 hardware interface for controlling and monitoring
+ * a Lego Mindstorm infrared sensor(EV2 or EV3). It supports initialization,
+ * state and command interface exports, and data exchange between ROS 2 Control
+ * and the physical hardware - only for simulation.
+ *
+ */
 class SensorTouchInterface : public hardware_interface::SystemInterface
 {
 public:
   RCLCPP_SHARED_PTR_DEFINITIONS(SensorTouchInterface)
 
-  // ───────────────────────────────
-  // Méthodes de cycle de vie
-  // ───────────────────────────────
-
-  hardware_interface::CallbackReturn on_init(
-    const hardware_interface::HardwareInfo & info) override;
+  /**
+   * @brief Initializes the hardware interface from the provided hardware information.
+   *
+   * This function reads configuration parameters from the `HardwareInfo` structure
+   * provided by the ROS 2 Control system and sets up the internal state and command
+   * variables accordingly.
+   *
+   * @param info Hardware information containing configuration and parameters.
+   * @return CallbackReturn::SUCCESS if initialization succeeded,
+   *         CallbackReturn::ERROR otherwise.
+   */
+  hardware_interface::CallbackReturn on_init(const hardware_interface::HardwareInfo & info) override;
 
   /**
    * @brief Lifecycle transition: Configure the node.
@@ -39,8 +52,7 @@ public:
    * @param state Current lifecycle state.
    * @return CallbackReturn indicating success or failure.
    */
-  hardware_interface::CallbackReturn on_configure(
-    const rclcpp_lifecycle::State & previous_state) override;
+  hardware_interface::CallbackReturn on_configure(const rclcpp_lifecycle::State & previous_state) override;
 
   /**
    * @brief Lifecycle transition: Activate the node.
@@ -49,12 +61,11 @@ public:
    * @param state Current lifecycle state.
    * @return CallbackReturn indicating success or failure.
    */
-  hardware_interface::CallbackReturn on_activate(
-    const rclcpp_lifecycle::State & previous_state) override;
+  hardware_interface::CallbackReturn on_activate(const rclcpp_lifecycle::State & previous_state) override;
 
   /**
    * @brief Lifecycle transition: Deactivate the node.
-   * Deactivates the publisher.
+   * Deactivates the publisher
    * 
    * @param state Current lifecycle state.
    * @return CallbackReturn indicating success or failure.
@@ -118,7 +129,6 @@ private:
   /// Subscription to the simulated distance topic
   rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr sub_;
 
-  // Mutex pour protéger l’accès à touch_state_ depuis le callback
   std::mutex state_mutex_;
 };
 
