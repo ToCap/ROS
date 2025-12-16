@@ -1,0 +1,12 @@
+module vda5050_210
+{
+  module msg
+  {
+    struct Error
+    {
+      string error_type;
+      string error_description;
+      string error_level;   // WARNING | ERROR | FATAL
+    };
+  };
+};

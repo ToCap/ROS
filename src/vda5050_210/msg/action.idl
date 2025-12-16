@@ -1,0 +1,21 @@
+module vda5050_210
+{
+  module msg
+  {
+    struct ActionParameter
+    {
+      string key;
+      string value;
+    };
+
+    struct Action
+    {
+      string action_type;
+      string action_id;
+      uint32 action_sequence_id;
+
+      sequence<ActionParameter> parameters;
+      bool blocking;
+    };
+  };
+};

@@ -1,0 +1,20 @@
+#include "vda5050_210/msg/Header.idl"
+#include "vda5050_210/msg/Node.idl"
+#include "vda5050_210/msg/Edge.idl"
+
+module vda5050_210
+{
+  module msg
+  {
+    struct Order
+    {
+      Header header;
+
+      string order_id;
+      uint32 order_update_id;
+
+      sequence<Node> nodes;
+      sequence<Edge> edges;
+    };
+  };
+};

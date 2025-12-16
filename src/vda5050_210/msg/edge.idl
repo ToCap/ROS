@@ -1,0 +1,23 @@
+#include "vda5050_210/msg/Action.idl"
+
+module vda5050_210
+{
+  module msg
+  {
+    struct Edge
+    {
+      string edge_id;
+      uint32 sequence_id;
+      bool released;
+
+      string start_node_id;
+      string end_node_id;
+
+      double max_speed;
+      double max_height;
+      double max_load;
+
+      sequence<Action> actions;
+    };
+  };
+};

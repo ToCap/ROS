@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>vda5050_210</name>
+  <version>2.1.0</version>
+
+  <description>
+    ROS 2 message definitions (IDL) for VDA 5050 standard version 2.1.0.
+    This package provides DDS/ROS 2 compatible interfaces communication according to VDA 5050 v2.1.0
+  </description>
+
+  <maintainer email="ToCap@github.com">ToCap</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <build_depend>rosidl_default_generators</build_depend>
+  <exec_depend>rosidl_default_runtime</exec_depend>
+  <member_of_group>rosidl_interface_packages</member_of_group>
+
+</package>

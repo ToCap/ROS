@@ -1,0 +1,45 @@
+#include "vda5050_210/msg/Header.idl"
+#include "vda5050_210/msg/BatteryState.idl"
+#include "vda5050_210/msg/Error.idl"
+
+module vda5050_210
+{
+  module msg
+  {
+    struct AGVPosition
+    {
+      double x;
+      double y;
+      double theta;
+      string map_id;
+    };
+
+    struct Velocity
+    {
+      double vx;
+      double vy;
+      double omega;
+    };
+
+    struct State
+    {
+      Header header;
+
+      string order_id;
+      uint32 order_update_id;
+
+      string last_node_id;
+      string last_edge_id;
+
+      AGVPosition agv_position;
+      Velocity velocity;
+
+      BatteryState battery_state;
+      sequence<Error> errors;
+
+      bool driving;
+      bool paused;
+      bool emergency_stop;
+    };
+  };
+};

@@ -1,0 +1,14 @@
+module vda5050_210
+{
+  module msg
+  {
+    struct Header
+    {
+      string header_id;
+      string timestamp;        // ISO 8601 UTC
+      string version;          // ex: "2.1.0"
+      string manufacturer;
+      string serial_number;
+    };
+  };
+};

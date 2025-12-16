@@ -1,0 +1,26 @@
+#include "vda5050_210/msg/Action.idl"
+
+module vda5050_210
+{
+  module msg
+  {
+    struct NodePosition
+    {
+      double x;
+      double y;
+      double theta;
+      string map_id;
+      string map_description;
+    };
+
+    struct Node
+    {
+      string node_id;
+      uint32 sequence_id;
+      bool released;
+
+      NodePosition position;
+      sequence<Action> actions;
+    };
+  };
+};

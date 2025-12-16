@@ -1,0 +1,13 @@
+module vda5050_210
+{
+  module msg
+  {
+    struct BatteryState
+    {
+      double battery_charge;     // %
+      double battery_voltage;    // V
+      double battery_current;    // A
+      bool charging;
+    };
+  };
+};
