@@ -22,7 +22,6 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/State.idl"
   "msg/BatteryState.idl"
   "msg/Error.idl"
-  # ajoute ici les autres messages VDA5050 si besoin
 )
 
 # ===================================================================

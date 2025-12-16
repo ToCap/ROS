@@ -1,6 +1,6 @@
-#include "vda5050_210/msg/Header.idl"
-#include "vda5050_210/msg/BatteryState.idl"
-#include "vda5050_210/msg/Error.idl"
+#include "vda5050_210/msg/header.idl"
+#include "vda5050_210/msg/batteryState.idl"
+#include "vda5050_210/msg/error.idl"
 
 module vda5050_210
 {

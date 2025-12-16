@@ -1,6 +1,6 @@
-#include "vda5050_210/msg/Header.idl"
-#include "vda5050_210/msg/Node.idl"
-#include "vda5050_210/msg/Edge.idl"
+#include "vda5050_210/msg/header.idl"
+#include "vda5050_210/msg/node.idl"
+#include "vda5050_210/msg/edge.idl"
 
 module vda5050_210
 {
