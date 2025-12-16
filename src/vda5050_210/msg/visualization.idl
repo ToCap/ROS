@@ -1,0 +1,51 @@
+#include "std_msgs/msg/header.idl"
+
+module vda5050_210
+{
+  module msg
+  {
+    // Visualization message according to VDA 5050 v2.1.0
+    // Intended for dashboards, HMIs, and monitoring purposes.
+
+    struct Visualization
+    {
+      // Standard ROS 2 header
+      std_msgs::msg::Header header;
+
+      // Identification
+      string order_id;
+      uint32 order_update_id;
+
+      // AGV identification
+      string manufacturer;
+      string serial_number;
+
+      // Current AGV position
+      double x;
+      double y;
+      double theta;
+      string map_id;
+
+      // Current node / edge
+      string current_node_id;
+      string current_edge_id;
+
+      // Velocity in m/s and rad/s
+      double vx;
+      double vy;
+      double omega;
+
+      // Battery information
+      double battery_charge;    // percentage [0..100]
+      boolean charging;
+
+      // State flags
+      boolean driving;
+      boolean paused;
+      boolean emergency_stop;
+
+      // Optional text for visualization purposes
+      string info_text;
+    };
+  };
+};
