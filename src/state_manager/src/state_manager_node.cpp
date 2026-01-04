@@ -11,10 +11,11 @@ namespace state_manager
 
 StateManagerNode::StateManagerNode(const rclcpp::NodeOptions & options) : LifecycleNode("state_manager", options)
 {
-  // params (peuvent être surchargés via launch)
+  // declare parameters
   this->declare_parameter<std::vector<std::string>>("monitored_nodes", std::vector<std::string>{});
   this->declare_parameter<double>("evaluation_period_s", 1.0);
 
+  // load parameters
   monitored_nodes_ = this->get_parameter("monitored_nodes").as_string_array();
   evaluation_period_s_ = this->get_parameter("evaluation_period_s").as_double();
 

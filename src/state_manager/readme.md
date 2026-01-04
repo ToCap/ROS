@@ -55,7 +55,7 @@ sequenceDiagram
     Note over SM: Start state_manager node
     SM->>SM: Load configuration parameters to get list of monitored node
     SM->>SL: set_monitored_nodes([...])
-    SM->>SM: Créer subscriptions / services clients pour chaque node
+    SM->>SM: Create subscriptions / services clients for each node
 
     loop on timer
         SM->>Node1: Check state through lifecycle topic /transition_event or service /get_state

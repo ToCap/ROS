@@ -34,7 +34,7 @@ public:
 private:
   void init_monitors();
   void on_transition_event(const std::string & node_name, const TransitionEvent::SharedPtr msg);
-  void evaluate_and_act(); // logique périodique
+  void evaluate_and_act();
   bool call_change_state(const std::string & node_name, uint8_t transition_id);
   uint8_t call_get_state(const std::string & node_name);
 
