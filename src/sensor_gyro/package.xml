@@ -2,7 +2,7 @@
 <package format="3">
   <name>sensor_gyro</name>
   <version>0.1.0</version>
-  <description>Abstraction node for gyro sensor. Aggregates sensor state, publishes diagnostics, and enforces rules to ensure safe hardware lifecycle transitions.</description>
+  <description>Abstraction node for gyro sensor. Aggregates sensor state, publishes diagnostics and applies application-level rules to provide a safe and consistent sensor output.</description>
   <maintainer email="ToCap@github.com">ToCap</maintainer>
   <license>Apache-2.0</license>
 
