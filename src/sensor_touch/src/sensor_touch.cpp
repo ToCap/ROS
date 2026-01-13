@@ -8,7 +8,6 @@ SensorTouch::SensorTouch(const rclcpp::NodeOptions & options)
   diag_updater_(this)
 {
   diag_updater_.setHardwareID("sensor_touch");
-
   RCLCPP_INFO(get_logger(), "SensorTouch abstraction node created");
 }
 
@@ -16,30 +15,25 @@ CallbackReturn SensorTouch::on_configure(const rclcpp_lifecycle::State &)
 {
   RCLCPP_INFO(get_logger(), "Configuring sensor_touch abstraction...");
 
-  // Initialize maps for current sensor types
-  angles_.clear();
-  rates_.clear();
+  // Initialize map for current sensor types
   pressed_.clear();
-
-  for (auto type : {TouchSensorType::MINDSTORM_EV3}) {
-    angles_[type] = 0.0;
-    rates_[type] = 0.0;
+  for (auto type : {TouchSensorType::MINDSTORM_EV3})
+  {
     pressed_[type] = false;
   }
 
-  // Subscriptions
-  touch_angle_sub_ = this->create_subscription<std_msgs::msg::Float64>(
-    "touch/angle",
+  // Subscribe to the low-level touch sensor state
+  touch_state_sub_ = this->create_subscription<std_msgs::msg::Bool>(
+    "/touch_sensor/state",
     rclcpp::QoS(10),
-    std::bind(&SensorTouch::on_touch_angle_callback, this, std::placeholders::_1));
-
-  touch_rate_sub_ = this->create_subscription<std_msgs::msg::Float64>(
-    "touch/rate",
-    rclcpp::QoS(10),
-    std::bind(&SensorTouch::on_touch_rate_callback, this, std::placeholders::_1));
+    std::bind(&SensorTouch::on_touch_state_callback, this, std::placeholders::_1));
 
   // Publisher for consolidated touch state
-  touch_pub_ = this->create_publisher<std_msgs::msg::Float64>("touch/state", 10);
+  touch_pub_ = this->create_publisher<std_msgs::msg::Float64>("touch/state_abstraction", 10);
+
+  // Register diagnostic task
+  diag_updater_.setHardwareID("sensor_touch");
+  diag_updater_.add("Touch Sensor Status", this, &SensorTouch::produceDiagnostics);
 
   RCLCPP_INFO(get_logger(), "sensor_touch abstraction configured.");
   return CallbackReturn::SUCCESS;
@@ -72,12 +66,8 @@ CallbackReturn SensorTouch::on_cleanup(const rclcpp_lifecycle::State &)
 {
   RCLCPP_INFO(get_logger(), "Cleaning up sensor_touch abstraction...");
 
-  touch_angle_sub_.reset();
-  touch_rate_sub_.reset();
+  touch_state_sub_.reset();
   touch_pub_.reset();
-
-  angles_.clear();
-  rates_.clear();
   pressed_.clear();
 
   return CallbackReturn::SUCCESS;
@@ -95,33 +85,15 @@ CallbackReturn SensorTouch::on_shutdown(const rclcpp_lifecycle::State & state)
 // CALLBACKS
 // ---------------------------------------------------------------------------
 
-void SensorTouch::on_touch_angle_callback(const std_msgs::msg::Float64::SharedPtr msg)
+void SensorTouch::on_touch_state_callback(const std_msgs::msg::Bool::SharedPtr msg)
 {
   std::lock_guard<std::mutex> lock(data_mutex_);
-  double angle = msg->data;
-
-  // RULE: angle > 0.5 → pressed
-  pressed_[TouchSensorType::MINDSTORM_EV3] = (angle > 0.5);
-  angles_[TouchSensorType::MINDSTORM_EV3] = angle;
+  pressed_[TouchSensorType::MINDSTORM_EV3] = msg->data;
 
   publish_output();
 
-  RCLCPP_DEBUG(get_logger(), "Touch angle received: %.3f → pressed=%s",
-               angle, pressed_[TouchSensorType::MINDSTORM_EV3] ? "true" : "false");
-}
-
-void SensorTouch::on_touch_rate_callback(const std_msgs::msg::Float64::SharedPtr msg)
-{
-  std::lock_guard<std::mutex> lock(data_mutex_);
-  double rate = msg->data;
-  rates_[TouchSensorType::MINDSTORM_EV3] = rate;
-
-  // Optional logic
-  if (rate > 10.0) {
-    RCLCPP_WARN(get_logger(), "Touch rate unusually high: %.2f", rate);
-  }
-
-  RCLCPP_DEBUG(get_logger(), "Touch rate: %.3f", rate);
+  RCLCPP_DEBUG(get_logger(), "Touch state received: %s",
+               pressed_[TouchSensorType::MINDSTORM_EV3] ? "pressed" : "released");
 }
 
 // ---------------------------------------------------------------------------
@@ -147,8 +119,7 @@ void SensorTouch::produceDiagnostics(diagnostic_updater::DiagnosticStatusWrapper
   stat.summary(pressed ? diagnostic_msgs::msg::DiagnosticStatus::WARN
                        : diagnostic_msgs::msg::DiagnosticStatus::OK,
                pressed ? "Touch sensor pressed" : "Sensor idle");
-  stat.add("Angle", angles_[TouchSensorType::MINDSTORM_EV3]);
-  stat.add("Rate", rates_[TouchSensorType::MINDSTORM_EV3]);
+  stat.add("Pressed", pressed);
 }
 
 bool SensorTouch::check_system_conditions()

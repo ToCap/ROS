@@ -2,18 +2,19 @@
 
 /**
  * @file sensor_touch.hpp
- * @brief LifecycleNode that abstracts one or more touch sensors.
+ * @brief Lifecycle abstraction node for touch sensors.
  *
- * This node acts as a facade over one or more sensor hardware interfaces.
- * It aggregates sensor measurements, publishes diagnostics, and applies
- * application-level rules to provide a safe and consistent touch output.
+ * This node provides a unified touch sensor abstraction over one or more
+ * hardware touch sensor interfaces.
  *
- * It aggregates raw sensor data, publishes diagnostics, and applies
- * application-level rules to expose a safe and consistent touch state.
+ * The node automatically adapts to the available sensor streams at runtime,
+ * publishes diagnostics, and applies deterministic application-level rules
+ * to expose a safe and consistent touch state.
  */
 
 #include <rclcpp_lifecycle/lifecycle_node.hpp>
 #include <std_msgs/msg/float64.hpp>
+#include <std_msgs/msg/bool.hpp>
 #include <diagnostic_updater/diagnostic_updater.hpp>
 #include <map>
 #include <mutex>
@@ -36,9 +37,12 @@ using CallbackReturn =
  * @class SensorTouch
  * @brief LifecycleNode that abstracts one or more touch sensors.
  *
- * This node acts as a facade over the touch hardware interface.
- * It aggregates sensor measurements, publishes diagnostics, and enforces
- * application-level rules before exposing the touch state.
+ * This node acts as a facade over one or more touch hardware interfaces.
+ * It aggregates raw sensor states, publishes diagnostics, and enforces
+ * application-level rules before exposing a consolidated touch output.
+ *
+ * The abstraction ensures a clean separation between hardware access
+ * and higher-level robot logic.
  */
 class SensorTouch : public rclcpp_lifecycle::LifecycleNode
 {
@@ -58,17 +62,21 @@ protected:
   CallbackReturn on_shutdown(const rclcpp_lifecycle::State & previous_state) override;
 
 private:
-  /// @brief Callback for touch angle updates
-  void on_touch_angle_callback(const std_msgs::msg::Float64::SharedPtr msg);
-
-  /// @brief Callback for touch rate updates
-  void on_touch_rate_callback(const std_msgs::msg::Float64::SharedPtr msg);
+  /**
+   * @brief Callback for raw touch state updates.
+   *
+   * This callback receives the low-level hardware state published by the
+   * sensor interface and updates the internal touch state representation.
+   *
+   * @param msg Boolean message indicating whether the sensor is pressed.
+   */
+  void on_touch_state_callback(const std_msgs::msg::Bool::SharedPtr msg);
 
   /**
    * @brief Publish the consolidated touch state.
    *
-   * This method applies application-level rules to determine whether
-   * the sensor is considered "pressed" and publishes the result.
+   * This method applies application-level rules and publishes a normalized
+   * touch state (1.0 = pressed, 0.0 = released).
    */
   void publish_output();
 
@@ -76,25 +84,30 @@ private:
    * @brief Generate diagnostic information for the touch sensor.
    *
    * This function is registered with the diagnostic_updater and is called
-   * periodically to publish the current sensor status.
+   * periodically to publish the current status of the touch sensor.
    *
    * @param stat DiagnosticStatusWrapper object used to populate the diagnostic message.
    */
   void produceDiagnostics(diagnostic_updater::DiagnosticStatusWrapper & stat);
 
-private:
-  /// Subscriptions to raw sensor topics
-  rclcpp::Subscription<std_msgs::msg::Float64>::SharedPtr touch_angle_sub_;
-  rclcpp::Subscription<std_msgs::msg::Float64>::SharedPtr touch_rate_sub_;
+  /**
+   * @brief Check whether system conditions allow node activation.
+   *
+   * This method enforces application-level business rules that may prevent
+   * lifecycle transitions (e.g., activation while the sensor is pressed).
+   *
+   * @return true if activation is allowed, false otherwise.
+   */
+  bool check_system_conditions();
 
-  /// Lifecycle publisher for the consolidated touch state
+private:
+  /// Subscription to the raw hardware touch state topic
+  rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr touch_state_sub_;
+
+  /// Lifecycle publisher for the abstracted touch state
   rclcpp_lifecycle::LifecyclePublisher<std_msgs::msg::Float64>::SharedPtr touch_pub_;
 
-  /// Latest raw measurements
-  std::map<TouchSensorType, double> angles_;
-  std::map<TouchSensorType, double> rates_;
-
-  /// Derived touch state
+  /// Latest touch state for each sensor type
   std::map<TouchSensorType, bool> pressed_;
 
   /// Diagnostic updater
