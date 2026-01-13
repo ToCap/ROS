@@ -10,6 +10,11 @@
  * The node automatically adapts to the available sensor streams at runtime,
  * publishes diagnostics, and applies deterministic application-level rules
  * to expose a safe and consistent touch state.
+ *
+ * The node now publishes both:
+ *  - touch_pub_: normalized Boolean state (0.0 = released, 1.0 = pressed)
+ *  - measured_value_pub_: discrete measured value based on TouchMeasuredValue enum
+ *    (0 = Released, 1 = Pressed, 2 = Bumped)
  */
 
 #include <rclcpp_lifecycle/lifecycle_node.hpp>
@@ -18,6 +23,8 @@
 #include <diagnostic_updater/diagnostic_updater.hpp>
 #include <map>
 #include <mutex>
+
+#include "sensor_touch/sensor_touch_types.hpp"
 
 namespace sensor_touch_abstraction
 {
@@ -75,8 +82,9 @@ private:
   /**
    * @brief Publish the consolidated touch state.
    *
-   * This method applies application-level rules and publishes a normalized
-   * touch state (1.0 = pressed, 0.0 = released).
+   * This method applies application-level rules and publishes:
+   *  - touch_pub_: normalized Boolean state (0.0 = released, 1.0 = pressed)
+   *  - measured_value_pub_: discrete TouchMeasuredValue (0 = Released, 1 = Pressed, 2 = Bumped)
    */
   void publish_output();
 
@@ -104,11 +112,17 @@ private:
   /// Subscription to the raw hardware touch state topic
   rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr touch_state_sub_;
 
-  /// Lifecycle publisher for the abstracted touch state
+  /// Lifecycle publisher for the normalized Boolean touch state
   rclcpp_lifecycle::LifecyclePublisher<std_msgs::msg::Float64>::SharedPtr touch_pub_;
 
-  /// Latest touch state for each sensor type
+  /// Lifecycle publisher for the measured value (TouchMeasuredValue)
+  rclcpp_lifecycle::LifecyclePublisher<std_msgs::msg::Float64>::SharedPtr measured_value_pub_;
+
+  /// Latest Boolean touch state for each sensor type
   std::map<TouchSensorType, bool> pressed_;
+
+  /// Latest measured value for each sensor type
+  std::map<TouchSensorType, TouchMeasuredValue> measured_value_;
 
   /// Diagnostic updater
   diagnostic_updater::Updater diag_updater_;
