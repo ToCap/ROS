@@ -1,0 +1,15 @@
+# Goal
+uint16 protocol_version
+geometry_msgs/Pose target
+geometry_msgs/Pose[] waypoints
+float32 max_speed
+bool allow_reverse
+---
+# Result
+bool success
+uint16 error_code
+string message
+---
+# Feedback
+float32 progress
+string state

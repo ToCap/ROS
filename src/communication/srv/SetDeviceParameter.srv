@@ -1,0 +1,20 @@
+uint16 protocol_version
+
+uint8 DEVICE_UNKNOWN=0
+uint8 DEVICE_SENSOR=1
+uint8 DEVICE_ACTUATOR=2
+uint8 device_type
+
+uint16 device_id
+string device_name
+
+string parameter_name
+string parameter_type
+string parameter_value
+
+uint32 crc32
+uint32 sequence_id
+---
+bool success
+uint16 error_code
+string message
