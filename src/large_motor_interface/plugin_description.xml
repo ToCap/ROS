@@ -1,0 +1,10 @@
+<library path="large_motor_interface">
+  <class
+    name="large_motor_interface/LargeMotorInterface"
+    type="large_motor_interface::LargeMotorInterface"
+    base_class_type="hardware_interface::SystemInterface">
+    <description>
+      Minimal motor hardware interface for ROS 2 control.
+    </description>
+  </class>
+</library>
